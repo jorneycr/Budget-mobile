@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {
-  SafeAreaView,
   Image,
   View,
-  Text,
   StyleSheet,
   Alert,
   Pressable,
   Modal,
+  ScrollView,
 } from 'react-native';
 import Header from './src/components/Header';
 import NuevoPresupuesto from './src/components/NuevoPresupuesto';
@@ -31,7 +30,7 @@ function App() {
   };
 
   const handleGasto = gasto => {
-    if (Object.values(gasto).includes('')) {
+    if ([gasto.nombre, gasto.categoria, gasto.cantidad].includes('')) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
@@ -43,19 +42,21 @@ function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Header />
-        {isValidPresupuesto ? (
-          <ControlPresupuesto gastos={gastos} presupuesto={presupuesto} />
-        ) : (
-          <NuevoPresupuesto
-            setPresupuesto={setPresupuesto}
-            presupuesto={presupuesto}
-            handleNuevoPresupuesto={handleNuevoPresupuesto}
-          />
-        )}
-      </View>
-      {isValidPresupuesto && <ListadoGastos gastos={gastos} />}
+      <ScrollView>
+        <View style={styles.header}>
+          <Header />
+          {isValidPresupuesto ? (
+            <ControlPresupuesto gastos={gastos} presupuesto={presupuesto} />
+          ) : (
+            <NuevoPresupuesto
+              setPresupuesto={setPresupuesto}
+              presupuesto={presupuesto}
+              handleNuevoPresupuesto={handleNuevoPresupuesto}
+            />
+          )}
+        </View>
+        {isValidPresupuesto && <ListadoGastos gastos={gastos} />}
+      </ScrollView>
       {modal && (
         <Modal
           animationType="slide"
@@ -85,12 +86,13 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#3B82F6',
+    minHeight: 400,
   },
   imagen: {
     width: 60,
     height: 60,
     position: 'absolute',
-    top: 20,
+    bottom: 10,
     right: 20,
   },
 });
