@@ -20,6 +20,7 @@ function App() {
   const [presupuesto, setPresupuesto] = useState(0);
   const [gastos, setGastos] = useState([]);
   const [modal, setModal] = useState(false);
+  const [gasto, setGasto] = useState({});
 
   const handleNuevoPresupuesto = presupuesto => {
     if (Number(presupuesto) > 0) {
@@ -35,9 +36,18 @@ function App() {
       return;
     }
 
-    gasto.id = generarId();
-    gasto.fecha = Date.now();
-    setGastos([...gastos, gasto]);
+    if (gasto.id) {
+      const gastosActualizados = gastos.map(gastoState =>
+        gastoState.id === gasto.id ? gasto : gastoState,
+      );
+      setGastos(gastosActualizados);
+    } else {
+      //nuevo registro
+      gasto.id = generarId();
+      gasto.fecha = Date.now();
+      setGastos([...gastos, gasto]);
+    }
+
     setModal(!modal);
   };
 
@@ -56,7 +66,13 @@ function App() {
             />
           )}
         </View>
-        {isValidPresupuesto && <ListadoGastos gastos={gastos} />}
+        {isValidPresupuesto && (
+          <ListadoGastos
+            gastos={gastos}
+            setModal={setModal}
+            setGasto={setGasto}
+          />
+        )}
       </ScrollView>
       {modal && (
         <Modal
@@ -65,7 +81,12 @@ function App() {
           onRequestClose={() => {
             setModal(!modal);
           }}>
-          <FormularioGasto handleGasto={handleGasto} setModal={setModal} />
+          <FormularioGasto
+            handleGasto={handleGasto}
+            setModal={setModal}
+            gasto={gasto}
+            setGasto={setGasto}
+          />
         </Modal>
       )}
       {isValidPresupuesto && (

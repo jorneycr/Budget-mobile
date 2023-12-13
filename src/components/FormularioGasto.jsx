@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -10,21 +10,38 @@ import {
 import {Picker} from '@react-native-picker/picker';
 import globalStyles from './../styles/index';
 
-const FormularioGasto = ({setModal, handleGasto}) => {
+const FormularioGasto = ({setModal, handleGasto, gasto, setGasto}) => {
   const [nombre, setNombre] = useState('');
   const [cantidad, setCantidad] = useState('');
   const [categoria, setCategoria] = useState('');
+  const [id, setId] = useState('');
+  const [fecha, setFecha] = useState('');
+
+  useEffect(() => {
+    if (gasto?.nombre) {
+      setNombre(gasto.nombre);
+      setCantidad(gasto.cantidad);
+      setCategoria(gasto.categoria);
+      setId(gasto.id);
+      setFecha(gasto.fecha);
+    }
+  }, [gasto]);
   return (
     <SafeAreaView style={styles.contenedor}>
       <View>
         <Pressable
-          onLongPress={() => setModal(false)}
+          onLongPress={() => {
+            setModal(false);
+            setGasto({});
+          }}
           style={[styles.btn, styles.btnCancelar]}>
           <Text style={styles.btnCancelarTexto}>Cancelar</Text>
         </Pressable>
       </View>
       <View style={styles.formulario}>
-        <Text style={styles.titulo}>Nuevo Gasto</Text>
+        <Text style={styles.titulo}>
+          {gasto?.nombre ? 'Editar ' : 'Nuevo '} Gasto
+        </Text>
         <View style={styles.campo}>
           <Text style={styles.label}>Nombre Gasto</Text>
           <TextInput
@@ -58,10 +75,12 @@ const FormularioGasto = ({setModal, handleGasto}) => {
         </View>
         <Pressable
           onPress={() => {
-            handleGasto({nombre, cantidad, categoria});
+            handleGasto({nombre, cantidad, categoria, id, fecha});
           }}
           style={styles.btnSubmit}>
-          <Text style={styles.btnSubmitTexto}>Agregar Gasto</Text>
+          <Text style={styles.btnSubmitTexto}>
+            {gasto?.nombre ? 'Editar ' : 'Agregar '} Gasto
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>
