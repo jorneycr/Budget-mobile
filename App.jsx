@@ -96,6 +96,8 @@ function App() {
             />
             <ListadoGastos
               gastos={gastos}
+              filtro={filtro}
+              gastosFiltrados={gastosFiltrados}
               setModal={setModal}
               setGasto={setGasto}
             />
