@@ -128,12 +128,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#3B82F6',
     minHeight: 400,
   },
-  imagen: {
-    width: 60,
-    height: 60,
+  pressable: {
     position: 'absolute',
     bottom: 10,
     right: 20,
+  },
+  imagen: {
+    width: 60,
+    height: 60,
   },
 });
 
