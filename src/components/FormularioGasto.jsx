@@ -10,7 +10,13 @@ import {
 import {Picker} from '@react-native-picker/picker';
 import globalStyles from './../styles/index';
 
-const FormularioGasto = ({setModal, handleGasto, gasto, setGasto}) => {
+const FormularioGasto = ({
+  setModal,
+  handleGasto,
+  gasto,
+  setGasto,
+  eliminarGasto,
+}) => {
   const [nombre, setNombre] = useState('');
   const [cantidad, setCantidad] = useState('');
   const [categoria, setCategoria] = useState('');
@@ -28,14 +34,19 @@ const FormularioGasto = ({setModal, handleGasto, gasto, setGasto}) => {
   }, [gasto]);
   return (
     <SafeAreaView style={styles.contenedor}>
-      <View>
+      <View style={styles.contenedorBotones}>
         <Pressable
           onLongPress={() => {
             setModal(false);
             setGasto({});
           }}
           style={[styles.btn, styles.btnCancelar]}>
-          <Text style={styles.btnCancelarTexto}>Cancelar</Text>
+          <Text style={styles.btnTexto}>Cancelar</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.btn, styles.btnEliminar]}
+          onLongPress={() => eliminarGasto(id)}>
+          <Text style={styles.btnTexto}>Eliminar</Text>
         </Pressable>
       </View>
       <View style={styles.formulario}>
@@ -95,14 +106,24 @@ const styles = StyleSheet.create({
   formulario: {
     ...globalStyles.contenedor,
   },
-  btnCancelar: {
-    backgroundColor: '#DB2777',
+  contenedorBotones: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  btn: {
     padding: 10,
     marginTop: 30,
     marginHorizontal: 10,
     borderRadius: 10,
+    width: '45%',
   },
-  btnCancelarTexto: {
+  btnCancelar: {
+    backgroundColor: '#DB2777',
+  },
+  btnEliminar: {
+    backgroundColor: 'red',
+  },
+  btnTexto: {
     textAlign: 'center',
     textTransform: 'uppercase',
     fontWeight: 'bold',
@@ -111,7 +132,7 @@ const styles = StyleSheet.create({
   titulo: {
     textAlign: 'center',
     fontSize: 28,
-    marginVertical: 30,
+    marginBottom: 20,
     color: '#64748B',
   },
   campo: {
