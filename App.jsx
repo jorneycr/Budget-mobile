@@ -13,6 +13,7 @@ import Header from './src/components/Header';
 import NuevoPresupuesto from './src/components/NuevoPresupuesto';
 import ControlPresupuesto from './src/components/ControlPresupuesto';
 import FormularioGasto from './src/components/FormularioGasto';
+import {generarId} from './src/helpers';
 
 function App() {
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false);
@@ -27,6 +28,16 @@ function App() {
       Alert.alert('Error', 'El presupuesto no puede ser 0 o menor', 'OK');
     }
   };
+
+  const handleGasto = gasto => {
+    if (Object.values(gasto).includes('')) {
+      Alert.alert('Error', 'Todos los campos son obligatorios');
+      return;
+    }
+
+    gasto.id = generarId();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -48,7 +59,7 @@ function App() {
           onRequestClose={() => {
             setModal(!modal);
           }}>
-          <FormularioGasto setModal={setModal} />
+          <FormularioGasto handleGasto={handleGasto} setModal={setModal} />
         </Modal>
       )}
       {isValidPresupuesto && (
