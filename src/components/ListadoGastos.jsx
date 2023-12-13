@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     fontWeight: '700',
-    marginTop: 20,
   },
   noGasto: {
     marginVertical: 20,
