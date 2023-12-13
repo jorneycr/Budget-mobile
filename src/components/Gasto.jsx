@@ -25,7 +25,7 @@ const Gasto = ({gasto}) => {
           <View style={styles.contenedorTexto}>
             <Text style={styles.categoria}>{categoria}</Text>
             <Text style={styles.nombre}>{nombre}</Text>
-            {/* <Text style={styles.fecha}>{formatearFecha(fecha)}</Text> */}
+            <Text style={styles.fecha}>{formatearFecha(fecha)}</Text>
           </View>
         </View>
         <Text style={styles.cantidad}>{formatearCantidad(cantidad)}</Text>
