@@ -42,12 +42,17 @@ function App() {
         )}
       </View>
       {modal && (
-        <Modal animationType="slide" visible={modal}>
-          <FormularioGasto />
+        <Modal
+          animationType="slide"
+          visible={modal}
+          onRequestClose={() => {
+            setModal(!modal);
+          }}>
+          <FormularioGasto setModal={setModal} />
         </Modal>
       )}
       {isValidPresupuesto && (
-        <Pressable onPress={() => setModal(!modal)}>
+        <Pressable style={styles.pressable} onPress={() => setModal(!modal)}>
           <Image
             style={styles.imagen}
             source={require('./src/img/nuevo-gasto.png')}
@@ -70,7 +75,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     position: 'absolute',
-    top: 120,
+    top: 20,
     right: 20,
   },
 });
