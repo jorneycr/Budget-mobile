@@ -14,6 +14,7 @@ import NuevoPresupuesto from './src/components/NuevoPresupuesto';
 import ControlPresupuesto from './src/components/ControlPresupuesto';
 import FormularioGasto from './src/components/FormularioGasto';
 import {generarId} from './src/helpers';
+import ListadoGastos from './src/components/ListadoGastos';
 
 function App() {
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false);
@@ -36,6 +37,8 @@ function App() {
     }
 
     gasto.id = generarId();
+    setGastos([...gastos, gasto]);
+    setModal(!modal);
   };
 
   return (
@@ -52,6 +55,7 @@ function App() {
           />
         )}
       </View>
+      {isValidPresupuesto && <ListadoGastos gastos={gastos} />}
       {modal && (
         <Modal
           animationType="slide"
