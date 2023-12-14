@@ -30,7 +30,7 @@ function App() {
     const obtenerPresupuestoStorage = async () => {
       try {
         const presupuestoStorage =
-          (await AsyncStorage.getItem('presupuesto')) ?? 0;
+          (await AsyncStorage.getItem('planificador_presupuesto')) ?? 0;
 
         if (presupuestoStorage > 0) {
           setPresupuesto(presupuestoStorage);
@@ -41,13 +41,13 @@ function App() {
       }
     };
     obtenerPresupuestoStorage();
-  });
+  }, []);
 
   useEffect(() => {
     if (isValidPresupuesto) {
       const guardarPresupuestoStorage = async () => {
         try {
-          await AsyncStorage.setItem('presupuesto', presupuesto);
+          await AsyncStorage.setItem('planificador_presupuesto', presupuesto);
         } catch (error) {
           console.log(error);
         }
@@ -59,20 +59,26 @@ function App() {
   useEffect(() => {
     const obtenerGastosStorage = async () => {
       try {
-        const gastosStorage = (await AsyncStorage.getItem('gastos')) ?? [];
+        const gastosStorage = await AsyncStorage.getItem('planificador_gastos');
+
         setGastos(gastosStorage ? JSON.parse(gastosStorage) : []);
       } catch (error) {
         console.log(error);
       }
     };
     obtenerGastosStorage();
-  });
+  }, []);
 
   useEffect(() => {
     const guardarGastosStorage = async () => {
       try {
-        await AsyncStorage.setItem('gastos', JSON.stringify(gastos));
-      } catch (error) {}
+        await AsyncStorage.setItem(
+          'planificador_gastos',
+          JSON.stringify(gastos),
+        );
+      } catch (error) {
+        console.log(error);
+      }
     };
     guardarGastosStorage();
   }, [gastos]);
@@ -123,13 +129,41 @@ function App() {
     ]);
   };
 
+  const resetearApp = () => {
+    Alert.alert(
+      'Deseas resetear la APP?',
+      'Esto eliminara presupuesto y gastos',
+      [
+        {text: 'No', style: 'cancel'},
+        {
+          text: 'Si, Eliminar',
+          onPress: async () => {
+            try {
+              await AsyncStorage.clear();
+
+              setIsValidPresupuesto(false);
+              setPresupuesto(0);
+              setGastos([]);
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
           <Header />
           {isValidPresupuesto ? (
-            <ControlPresupuesto gastos={gastos} presupuesto={presupuesto} />
+            <ControlPresupuesto
+              gastos={gastos}
+              presupuesto={presupuesto}
+              resetearApp={resetearApp}
+            />
           ) : (
             <NuevoPresupuesto
               setPresupuesto={setPresupuesto}
